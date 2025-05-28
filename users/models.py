@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 # 사용자 모델을 정의하기 위해 Django의 AbstractBaseUser와 PermissionsMixin을 상속받습니다.
 # AbstractBaseUser는 기본적인 사용자 모델을 제공하고, PermissionsMixin은 권한 관련 기능을 추가합니다.
 class UserManager(BaseUserManager):
-    def create_user(self, username, email=None ,password=None):
+    def create_user(self, username, email ,password=None):
         if not username:
             raise ValueError("Users must have a username")
         if not email:
@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email=None, password=None):
+    def create_superuser(self, username, email, password=None):
         user = self.create_user(username, password, email)
         user.is_staff = True
         user.is_superuser = True
