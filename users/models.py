@@ -23,7 +23,9 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=128)
+    email = models.EmailField(max_length=150, unique=True)
     is_staff = models.BooleanField(default=False)  # 관리자인지 여부
+    is_active = models.BooleanField(default=True)
 
     objects = UserManager()  # 사용자 매니저 설정
 
