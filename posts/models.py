@@ -1,10 +1,20 @@
+# posts/models.py
+
 from django.db import models
 
 class Post(models.Model):
-    title = models.CharField(max_length=200)  # 게시글 제목
-    content = models.TextField()              # 게시글 내용
-    created_at = models.DateTimeField(auto_now_add=True)  # 작성 시간
-    updated_at = models.DateTimeField(auto_now=True)      # 수정 시간
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'Comment on {self.post}'

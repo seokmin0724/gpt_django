@@ -1,8 +1,9 @@
-<!-- post_confirm_delete.html -->
+<!-- templates/post_confirm_delete.html -->
+
 <h1>게시글 삭제</h1>
-<p>"{{ post.title }}"을 삭제하시겠습니까?</p>
+<p>정말로 삭제하시겠습니까?</p>
 <form method="post">
-  {% csrf_token %}
-  <button type="submit">삭제</button>
-  <a href="{% url 'post_detail' post.pk %}">취소</a>
+    {% csrf_token %}
+    <button type="submit">삭제</button>
 </form>
+<a href="{% url 'post_detail' post.pk %}">취소</a>
