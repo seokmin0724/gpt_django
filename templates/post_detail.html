@@ -1,23 +1,25 @@
-<!-- templates/post_detail.html -->
-
 <h1>{{ post.title }}</h1>
 <p>{{ post.content }}</p>
-<hr>
 
 <h2>댓글</h2>
-<ul>
-    {% for comment in comments %}
-        <li>{{ comment.content }} - {{ comment.created_at }}</li>
-    {% empty %}
-        <li>아직 댓글이 없습니다.</li>
-    {% endfor %}
-</ul>
-
-<h3>댓글 작성</h3>
 <form method="post">
     {% csrf_token %}
     {{ comment_form.as_p }}
-    <button type="submit">댓글 작성</button>
+    <input type="hidden" name="parent_id" id="parent_id" value="">
+    <button type="submit">댓글 달기</button>
 </form>
 
-<a href="{% url 'post_list' %}">목록으로</a>
+<ul>
+    {% for item in comments_with_replies %}
+        <li>
+            {{ item.comment.content }} - {{ item.comment.created_at }}
+            <button onclick="document.getElementById('parent_id').value='{{ item.comment.id }}'">답글 달기</button>
+
+            <ul>
+                {% for reply in item.replies %}
+                    <li>{{ reply.content }} - {{ reply.created_at }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>
