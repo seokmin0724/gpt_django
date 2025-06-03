@@ -1,25 +1,41 @@
 <h1>{{ post.title }}</h1>
 <p>{{ post.content }}</p>
 
+<hr>
+
 <h2>댓글</h2>
+
 <form method="post">
     {% csrf_token %}
     {{ comment_form.as_p }}
     <input type="hidden" name="parent_id" id="parent_id" value="">
-    <button type="submit">댓글 달기</button>
+    <button type="submit">댓글 달기 📝</button>
 </form>
+
+<p style="font-size: 0.9em; color: gray;">
+    💡 이모지를 입력하려면 Windows는 <kbd>Win + .</kbd>, Mac은 <kbd>Ctrl + Cmd + Space</kbd> 키를 사용하세요.
+</p>
+
+<hr>
 
 <ul>
     {% for item in comments_with_replies %}
-        <li>
-            {{ item.comment.content }} - {{ item.comment.created_at }}
-            <button onclick="document.getElementById('parent_id').value='{{ item.comment.id }}'">답글 달기</button>
+        <li style="margin-bottom: 1em;">
+            {{ item.comment.content }} - <small>{{ item.comment.created_at }}</small><br>
+            <button type="button" onclick="document.getElementById('parent_id').value='{{ item.comment.id }}'">
+                답글 달기 ↩️
+            </button>
 
-            <ul>
+            {% if item.replies %}
+            <ul style="margin-left: 20px; margin-top: 0.5em;">
                 {% for reply in item.replies %}
-                    <li>{{ reply.content }} - {{ reply.created_at }}</li>
+                    <li>
+                        {{ reply.content }} - <small>{{ reply.created_at }}</small>
+                    </li>
                 {% endfor %}
             </ul>
+            {% endif %}
         </li>
     {% endfor %}
 </ul>
+
