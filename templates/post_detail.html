@@ -1,35 +1,53 @@
+<!-- 글 제목 보여주기 -->
 <h1>{{ post.title }}</h1>
+
+<!-- 글 내용 보여주기 -->
 <p>{{ post.content }}</p>
 
 <hr>
 
+<!-- 댓글 섹션 제목 -->
 <h2>댓글</h2>
 
-<form method="post">
-    {% csrf_token %}
+<!-- 댓글 쓰는 폼 시작 -->
+<form method="post">  <!-- 댓글을 서버로 보내는 폼 (POST 방식) -->
+    {% csrf_token %}  <!-- 장고에서 필요한 보안 코드 (꼭 있어야 해요!) -->
+
     {{ comment_form.as_p }}
+    <!-- 댓글 입력칸이 자동으로 만들어져요 (우리가 만든 CommentForm 사용) -->
+
     <input type="hidden" name="parent_id" id="parent_id" value="">
+    <!-- 대댓글(답글)일 경우 부모 댓글의 ID를 담아두는 숨겨진 입력칸이에요 -->
+
     <button type="submit">댓글 달기 📝</button>
+    <!-- 댓글 달기 버튼 -->
 </form>
 
+<!-- 이모지 쓰는 방법 안내 (친절한 설명!) -->
 <p style="font-size: 0.9em; color: gray;">
     💡 이모지를 입력하려면 Windows는 <kbd>Win + .</kbd>, Mac은 <kbd>Ctrl + Cmd + Space</kbd> 키를 사용하세요.
 </p>
 
 <hr>
 
+<!-- 댓글과 대댓글을 보여주는 부분 -->
 <ul>
     {% for item in comments_with_replies %}
         <li style="margin-bottom: 1em;">
+            <!-- 부모 댓글 내용과 작성 시간 -->
             {{ item.comment.content }} - <small>{{ item.comment.created_at }}</small><br>
+
+            <!-- 답글 달기 버튼을 누르면 해당 댓글 ID를 숨겨진 input에 넣어요 -->
             <button type="button" onclick="document.getElementById('parent_id').value='{{ item.comment.id }}'">
                 답글 달기 ↩️
             </button>
 
+            <!-- 대댓글이 있을 경우 -->
             {% if item.replies %}
             <ul style="margin-left: 20px; margin-top: 0.5em;">
                 {% for reply in item.replies %}
                     <li>
+                        <!-- 대댓글 내용과 작성 시간 -->
                         {{ reply.content }} - <small>{{ reply.created_at }}</small>
                     </li>
                 {% endfor %}
@@ -38,4 +56,5 @@
         </li>
     {% endfor %}
 </ul>
+
 
